@@ -52,23 +52,24 @@ class EightGame(object):
                 if j < 2:
                     self.squares[i][j].adjacents['right'] = self.squares[i][j+1]
 
+
     def existing_label(self, label):
         """ Verificar se determinado label existe na tabela """
         for i in range(3):
             for j in range(3):
                 if label == self.squares[i][j].label:
-                    return True;
+                    return True
 
-        return False;
+        return False
 
 
     def is_objective(self):
         objective = "0 1 2\n3 4 5\n6 7 8"
 
         if objective == self.__str__():
-            return True;
+            return True
         else:
-            return False;
+            return False
 
 
     def __str__(self):
