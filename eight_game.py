@@ -2,15 +2,19 @@
 # -*- coding: utf-8 -*-
 
 import random
+import copy
 from square import *
 
 class EightGame(object):
     """docstring for EightGame"""
-    def __init__(self):
+    def __init__(self, squares=None):
         super(EightGame, self).__init__()
 
-        initial = Square(-1)
-        self.squares = [[initial, initial, initial], [initial, initial, initial], [initial, initial, initial]]
+        if squares is None:
+            initial = Square(-1)
+            self.squares = [[initial, initial, initial], [initial, initial, initial], [initial, initial, initial]]
+        else:
+            self.squares = copy.deepcopy(squares)
 
         i = 0
         j = 0
@@ -90,24 +94,33 @@ class EightGame(object):
         squares_str += str(self.squares[2][2].label)
 
         # """Retorna uma representação em string do jogo com os adjacentes"""
-        # squares_str = str(self.squares[0][0])
-        # squares_str += " "
+        # squares_str = str(self.squares[0][0].label)
+        # squares_str += str(self.squares[0][0])
+        # squares_str += "\t"
+        # squares_str += str(self.squares[0][1].label)
         # squares_str += str(self.squares[0][1])
-        # squares_str += " "
+        # squares_str += "\t"
+        # squares_str += str(self.squares[0][2].label)
         # squares_str += str(self.squares[0][2])
         # squares_str += "\n"
         #
+        # squares_str += str(self.squares[1][0].label)
         # squares_str += str(self.squares[1][0])
-        # squares_str += " "
+        # squares_str += "\t"
+        # squares_str += str(self.squares[1][1].label)
         # squares_str += str(self.squares[1][1])
-        # squares_str += " "
+        # squares_str += "\t"
+        # squares_str += str(self.squares[1][2].label)
         # squares_str += str(self.squares[1][2])
         # squares_str += "\n"
         #
+        # squares_str += str(self.squares[2][0].label)
         # squares_str += str(self.squares[2][0])
-        # squares_str += " "
+        # squares_str += "\t"
+        # squares_str += str(self.squares[2][1].label)
         # squares_str += str(self.squares[2][1])
-        # squares_str += " "
+        # squares_str += "\t"
+        # squares_str += str(self.squares[2][2].label)
         # squares_str += str(self.squares[2][2])
 
         return squares_str
