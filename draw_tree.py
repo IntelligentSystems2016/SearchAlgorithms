@@ -29,11 +29,12 @@ class DrawTree(object):
         dot.render(name)
         # dot.view(name)
 
-        # Remove os arquivos desnecessarios apos renderizacao
-        os.remove(name)
-
         # Chamada de sistema para abrir imagem
         os.system('shotwell ' + name + '.png')
+
+        # Remove os arquivos desnecessarios apos renderizacao
+        os.remove(name)
+        os.remove(name + '.png')
 
 
     def draw(self, tree):
@@ -43,16 +44,23 @@ class DrawTree(object):
         tree = copy.deepcopy(tree)
 
         global dot
+        dot.node_attr['style'] = 'filled'
 
         # Testa se jogo existe
         if not tree.eight_game is None:
             # Cria nó com id e jogo
-            dot.node(str(tree.id), str(tree.eight_game))
-            # Testa se existe lista com os filhos do nó atual
-            if tree.childrens:
-                # Percorre lista de filhos
-                for child in tree.childrens:
-                    # Recursão para desenhar sub-árvore de filhos
-                    self.draw(child)
-                    # Aresta entre árvore e sub-árvore
-                    dot.edge(str(tree.id), str(child.id))
+            if tree.is_visited:
+                if tree.is_objective:
+                    dot.node(str(tree.id), str(tree.eight_game), fillcolor = 'cornflowerblue')
+                else:
+                    dot.node(str(tree.id), str(tree.eight_game), fillcolor = '#FFFFFF')
+
+                # Testa se existe lista com os filhos do nó atual
+                if tree.childrens:
+                    # Percorre lista de filhos
+                    for child in tree.childrens:
+                        if child.is_visited:
+                            # Recursão para desenhar sub-árvore de filhos
+                            self.draw(child)
+                            # Aresta entre árvore e sub-árvore
+                            dot.edge(str(tree.id), str(child.id))

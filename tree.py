@@ -8,7 +8,7 @@ from game_activity import *
 class Tree(object):
     """docstring for Tree"""
 
-    def __init__(self, eight_game, tree_parent=None):
+    def __init__(self, eight_game, generated_trees=None):
         super(Tree, self).__init__()
         # Id gerado automaticamente
         self.id = time.time()
@@ -19,8 +19,16 @@ class Tree(object):
         # Lista com resultado do jogo após os possíveis movimentos serem feitos
         self.childrens = []
 
-        # Pai do nó atual
-        self.tree_parent = copy.deepcopy(tree_parent)
+        # Indica se o nó foi ou não marcado
+        self.is_visited = False
+
+        # Indica se o nó é ou não objetivo
+        self.is_objective = False
+
+        # Nós gerados até o momento
+        if generated_trees is None:
+            generated_trees = copy.deepcopy(str(eight_game))
+        self.generated_trees = copy.deepcopy(generated_trees)
 
 
     def generates_nodes(self):
@@ -33,40 +41,54 @@ class Tree(object):
         left = game_activity.move_to_left()
         right = game_activity.move_to_right()
 
+        generated = []
+        generated.append(str(top))
+        generated.append(str(bottom))
+        generated.append(str(left))
+        generated.append(str(right))
+
+        while '[]' in generated:
+            generated.remove('[]')
+
         if top:
-            top = Tree(top, copy.deepcopy(self))
-            if not top.parent_equal():
+            top = Tree(top, generated)
+            if not str(top.eight_game) in self.generated_trees:
                 self.childrens.append(top)
         if bottom:
-            bottom = Tree(bottom, copy.deepcopy(self))
-            if not bottom.parent_equal():
+            bottom = Tree(bottom, generated)
+            if not str(bottom.eight_game) in self.generated_trees:
                 self.childrens.append(bottom)
         if left:
-            left = Tree(left, copy.deepcopy(self))
-            if not left.parent_equal():
+            left = Tree(left, generated)
+            if not str(left.eight_game) in self.generated_trees:
                 self.childrens.append(left)
         if right:
-            right = Tree(right, copy.deepcopy(self))
-            if not right.parent_equal():
+            right = Tree(right, generated)
+            if not str(right.eight_game) in self.generated_trees:
                 self.childrens.append(right)
 
 
-    def parent_equal(self):
-        """ Verifica se algum dos seu nós antecessores é igual a ele mesmo. """
+    def search_in_width(self, trees):
+        """Preenche árvore e faz uma busca em largura pelo objetivo"""
 
-        # Cópia do pai do jogo atual
-        parent = copy.deepcopy(self.tree_parent)
+        if trees:
+            # Verifica se algum dos nós gera o nó obejetivo
+            for tree in trees:
+                tree.is_visited = True
+                if tree.eight_game.is_objective():
+                    tree.is_objective = True
+                    return
 
-        # Enquanto não chegar na raiz
-        while not parent is None:
-            # Se o jogo de um antecessor for igual, retorna verdadeiro
-            if str(parent.eight_game) == str(self.eight_game):
-                return True
-            else:
-                # Cópia do pai de um antecessor
-                parent = copy.deepcopy(parent.tree_parent)
+            # Lista auxiliar para colocar os nós do próximo nível
+            list_trees = []
 
-        return False
+            # Gera todos os nós do próximo nível
+            for tree in trees:
+                tree.generates_nodes()
+                list_trees += tree.childrens
+
+            # Recursão para desenhar sub-árvore de filhos
+            self.search_in_width(list_trees)
 
 
     def __str__(self):

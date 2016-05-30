@@ -64,7 +64,7 @@ class EightGame(object):
 
 
     def is_objective(self):
-        objective = "0 1 2\n3 4 5\n6 7 8"
+        objective = "1 2 3\n4 5 6\n7 8 0"
 
         if objective == self.__str__():
             return True
