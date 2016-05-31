@@ -12,7 +12,7 @@ class Tree(object):
     global is_finished
     is_finished = False
 
-    def __init__(self, eight_game, generated_trees=None):
+    def __init__(self, eight_game, generated_trees=[]):
         super(Tree, self).__init__()
         # Id gerado automaticamente
         self.id = time.time()
@@ -30,8 +30,8 @@ class Tree(object):
         self.is_objective = False
 
         # Nós gerados até o momento
-        if generated_trees is None:
-            generated_trees = copy.deepcopy(str(eight_game))
+        if not str(eight_game) in generated_trees:
+            generated_trees.append(str(eight_game))
         self.generated_trees = copy.deepcopy(generated_trees)
 
 
@@ -45,32 +45,33 @@ class Tree(object):
         left = game_activity.move_to_left()
         right = game_activity.move_to_right()
 
+        #
+        # while '[]' in generated:
+        #     generated.remove('[]')
+
         generated = []
-        generated.append(str(top))
-        generated.append(str(bottom))
-        generated.append(str(left))
-        generated.append(str(right))
 
-        while '[]' in generated:
-            generated.remove('[]')
+        if top and not str(top) in self.generated_trees:
+            top = Tree(top, self.generated_trees)
+            generated.append(str(top))
+            self.childrens.append(top)
 
-        if top:
-            top = Tree(top, generated)
-            if not str(top.eight_game) in self.generated_trees:
-                self.childrens.append(top)
-        if bottom:
-            bottom = Tree(bottom, generated)
-            if not str(bottom.eight_game) in self.generated_trees:
-                self.childrens.append(bottom)
-        if left:
-            left = Tree(left, generated)
-            if not str(left.eight_game) in self.generated_trees:
-                self.childrens.append(left)
-        if right:
-            right = Tree(right, generated)
-            if not str(right.eight_game) in self.generated_trees:
-                self.childrens.append(right)
+        if  bottom and not str(bottom) in self.generated_trees:
+            bottom = Tree(bottom, self.generated_trees)
+            generated.append(str(bottom))
+            self.childrens.append(bottom)
 
+        if  left and not str(left) in self.generated_trees:
+            left = Tree(left, self.generated_trees)
+            generated.append(str(left))
+            self.childrens.append(left)
+
+        if  right and not str(right) in self.generated_trees:
+            right = Tree(right, self.generated_trees)
+            generated.append(str(right))
+            self.childrens.append(right)
+
+        self.generated_trees += generated
         shuffle(self.childrens)
 
 

@@ -31,7 +31,6 @@ def main():
                 break
 
 
-    print(eight_game)
 
     # eight_game = EightGame([[Square(1), Square(2), Square(3)], [Square(4), Square(8), Square(5)], [Square(0), Square(7), Square(6)]])
     # eight_game = EightGame([[Square(1), Square(2), Square(0)], [Square(4), Square(5), Square(3)], [Square(7), Square(8), Square(6)]])
