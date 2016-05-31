@@ -4,9 +4,13 @@
 import copy
 import time
 from game_activity import *
+from random import shuffle
 
 class Tree(object):
     """docstring for Tree"""
+
+    global is_finished
+    is_finished = False
 
     def __init__(self, eight_game, generated_trees=None):
         super(Tree, self).__init__()
@@ -67,6 +71,8 @@ class Tree(object):
             if not str(right.eight_game) in self.generated_trees:
                 self.childrens.append(right)
 
+        shuffle(self.childrens)
+
 
     def search_in_width(self, trees):
         """Preenche árvore e faz uma busca em largura pelo objetivo"""
@@ -74,8 +80,11 @@ class Tree(object):
         if trees:
             # Verifica se algum dos nós gera o nó obejetivo
             for tree in trees:
+                # Marca nó atual como visitado
                 tree.is_visited = True
+                # Verifica se o jogo atual é o objetivo
                 if tree.eight_game.is_objective():
+                    # Marca nó atual como objetivo
                     tree.is_objective = True
                     return
 
@@ -89,6 +98,33 @@ class Tree(object):
 
             # Recursão para desenhar sub-árvore de filhos
             self.search_in_width(list_trees)
+
+
+    def search_in_depth(self, tree):
+        """Preenche árvore e faz uma busca em largura pelo objetivo"""
+
+        global is_finished
+
+        if tree:
+            # Marca nó atual como visitado
+            tree.is_visited = True
+            # Verifica se o jogo atual é o objetivo
+            if tree.eight_game.is_objective():
+                # Marca nó atual como objetivo
+                tree.is_objective = True
+                is_finished = True
+                return
+
+            # Gera os nós do próximo nível
+            tree.generates_nodes()
+
+            # Gera todos os nós do próximo nível
+            for child in tree.childrens:
+                # Recursão para desenhar sub-árvore de filhos
+                if is_finished:
+                    return
+                else:
+                    self.search_in_depth(child)
 
 
     def __str__(self):

@@ -3,6 +3,7 @@
 
 import random
 import copy
+from game_activity import *
 from square import *
 
 class EightGame(object):
@@ -11,27 +12,26 @@ class EightGame(object):
         super(EightGame, self).__init__()
 
         if squares is None:
-            initial = Square(-1)
-            self.squares = [[initial, initial, initial], [initial, initial, initial], [initial, initial, initial]]
+            self.squares = [[Square(1), Square(2), Square(3)], [Square(4), Square(5), Square(6)], [Square(7), Square(8), Square(0)]]
         else:
             self.squares = copy.deepcopy(squares)
 
-        i = 0
-        j = 0
-
-        # Tabela estará preenchida quando não existir mais nenhum label '-1'
-        while self.existing_label(-1):
-            # Cria laels de 0 á 8. Obs: 0 é considerado como o espaço vazio
-            label = random.randint(0,8)
-
-            if not self.existing_label(label):
-                self.squares[i][j] = Square(label)
-
-                if j == 2:
-                    j = 0
-                    i += 1
-                else:
-                    j += 1
+        # i = 0
+        # j = 0
+        #
+        # # Tabela estará preenchida quando não existir mais nenhum label '-1'
+        # while self.existing_label(-1):
+        #     # Cria laels de 0 á 8. Obs: 0 é considerado como o espaço vazio
+        #     label = random.randint(0,8)
+        #
+        #     if not self.existing_label(label):
+        #         self.squares[i][j] = Square(label)
+        #
+        #         if j == 2:
+        #             j = 0
+        #             i += 1
+        #         else:
+        #             j += 1
 
         for i in range(3):
             for j in range(3):
