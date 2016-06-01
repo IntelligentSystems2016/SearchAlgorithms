@@ -29,6 +29,9 @@ class Tree(object):
         # Indica se o nó é ou não objetivo
         self.is_objective = False
 
+        # Variável utilizada apenas nos Algoritmos A* e Guloso
+        self.path_cost = 0
+
         # Nós gerados até o momento
         if not str(eight_game) in generated_trees:
             generated_trees.append(str(eight_game))
@@ -72,60 +75,157 @@ class Tree(object):
             self.childrens.append(right)
 
         self.generated_trees += generated
-        shuffle(self.childrens)
+        # shuffle(self.childrens)
 
 
-    def search_in_width(self, trees):
+    def search_in_width(self, trees=None):
         """Preenche árvore e faz uma busca em largura pelo objetivo"""
 
-        if trees:
-            # Verifica se algum dos nós gera o nó obejetivo
-            for tree in trees:
-                # Marca nó atual como visitado
-                tree.is_visited = True
-                # Verifica se o jogo atual é o objetivo
-                if tree.eight_game.is_objective():
-                    # Marca nó atual como objetivo
-                    tree.is_objective = True
-                    return
 
-            # Lista auxiliar para colocar os nós do próximo nível
-            list_trees = []
+        if trees is None:
+            trees = [self]
 
-            # Gera todos os nós do próximo nível
-            for tree in trees:
-                tree.generates_nodes()
-                list_trees += tree.childrens
-
-            # Recursão para desenhar sub-árvore de filhos
-            self.search_in_width(list_trees)
-
-
-    def search_in_depth(self, tree):
-        """Preenche árvore e faz uma busca em largura pelo objetivo"""
-
-        global is_finished
-
-        if tree:
+        # Verifica se algum dos nós gera o nó obejetivo
+        for tree in trees:
             # Marca nó atual como visitado
             tree.is_visited = True
             # Verifica se o jogo atual é o objetivo
             if tree.eight_game.is_objective():
                 # Marca nó atual como objetivo
                 tree.is_objective = True
-                is_finished = True
                 return
 
-            # Gera os nós do próximo nível
-            tree.generates_nodes()
+        # Lista auxiliar para colocar os nós do próximo nível
+        list_trees = []
 
-            # Gera todos os nós do próximo nível
-            for child in tree.childrens:
-                # Recursão para desenhar sub-árvore de filhos
-                if is_finished:
-                    return
-                else:
-                    self.search_in_depth(child)
+        # Gera todos os nós do próximo nível
+        for tree in trees:
+            tree.generates_nodes()
+            list_trees += tree.childrens
+
+        # Recursão para desenhar sub-árvore de filhos
+        self.search_in_width(list_trees)
+
+
+    def search_in_depth(self, tree=None):
+        """Preenche árvore e faz uma busca em largura pelo objetivo"""
+
+        global is_finished
+
+        if tree is None:
+            tree = self
+
+        # Marca nó atual como visitado
+        tree.is_visited = True
+        # Verifica se o jogo atual é o objetivo
+        if tree.eight_game.is_objective():
+            # Marca nó atual como objetivo
+            tree.is_objective = True
+            is_finished = True
+            return
+
+        # Gera os nós do próximo nível
+        tree.generates_nodes()
+
+        # Gera todos os nós do próximo nível
+        for child in tree.childrens:
+            # Recursão para desenhar sub-árvore de filhos
+            if is_finished:
+                return
+            else:
+                self.search_in_depth(child)
+
+
+    def search_in_A(self):
+        """Preenche árvore e faz uma busca com Algoritmos A* pelo objetivo"""
+
+        tree = self
+
+        # Lista auxiliar para colocar os nós do próximo nível
+        list_trees = []
+
+        while True:
+            # Marca nó atual como visitado
+            tree.is_visited = True
+            # Verifica se o jogo atual é o objetivo
+            if tree.eight_game.is_objective():
+                # Marca nó atual como objetivo
+                tree.is_objective = True
+                return
+            else:
+
+                # Gera os nós do próximo nível
+                tree.generates_nodes()
+
+                # Insere filhos na lista
+                list_trees += tree.childrens
+                self.sort_distance(list_trees)
+
+            # Testa se a lista está vazia
+            if not list_trees:
+                return
+
+            tree = list_trees[0]
+            del list_trees[0]
+
+
+    def sort_distance(self, list_trees):
+        """ 1 2 3   [1,1] [1,2] [1,3]
+            4 5 6   [2,1] [2,2] [2,3]
+            7 8 0   [3,1] [3,2] [3,3]"""
+
+        # Calcula a distância Manhattan para cada nó
+        for tree in list_trees:
+            # Retorna posição do elemento
+            pos = self.get_position(tree, 1)
+            # Distância Manhattan do elemento
+            manhattan_distance = abs(1 - pos[0]) + abs(1 - pos[1])
+
+            pos = self.get_position(tree, 2)
+            manhattan_distance += abs(1 - pos[0]) + abs(2 - pos[1])
+
+            pos = self.get_position(tree, 3)
+            manhattan_distance += abs(1 - pos[0]) + abs(3 - pos[1])
+
+            pos = self.get_position(tree, 4)
+            manhattan_distance += abs(2 - pos[0]) + abs(1 - pos[1])
+
+            pos = self.get_position(tree, 5)
+            manhattan_distance += abs(2 - pos[0]) + abs(2 - pos[1])
+
+            pos = self.get_position(tree, 6)
+            manhattan_distance += abs(2 - pos[0]) + abs(3 - pos[1])
+
+            pos = self.get_position(tree, 7)
+            manhattan_distance += abs(3 - pos[0]) + abs(1 - pos[1])
+
+            pos = self.get_position(tree, 8)
+            manhattan_distance += abs(3 - pos[0]) + abs(2 - pos[1])
+
+            # Salva o custo do caminho do nó atual
+            tree.path_cost = manhattan_distance
+
+
+        for i,tree in enumerate(list_trees):
+            chave = tree
+            j = i - 1
+            while j >= 0 and list_trees[j].path_cost > chave.path_cost:
+                list_trees[j + 1] = list_trees[j]
+                j -= 1
+            list_trees[j + 1] = chave
+
+
+
+    def get_position(self, tree, value):
+        """Retorna posição do elemento no tabuleiro (matriz)"""
+        game = tree.eight_game.squares
+
+        for i in range(len(game)):
+            for j in range(len(game[i])):
+                if game[i][j].label == value:
+                    return [i,j]
+
+        return []
 
 
     def __str__(self):

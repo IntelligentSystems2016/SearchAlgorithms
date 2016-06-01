@@ -10,36 +10,26 @@ from square import *
 from tree import *
 
 def main():
-    eight_game = EightGame()
-
-    shuffle = random.randint(5,20)
-    for i in range(shuffle):
-        game_activity = GameActivity(eight_game)
-
-        while True:
-            moviment = random.randint(1,4)
-            if moviment == 1:
-                eight_game = game_activity.move_to_top()
-            elif moviment == 2:
-                eight_game = game_activity.move_to_bottom()
-            elif moviment == 3:
-                eight_game = game_activity.move_to_left()
-            elif moviment == 4:
-                eight_game = game_activity.move_to_right()
-
-            if eight_game:
-                break
+    eight_game = GameActivity(EightGame()).shuffle()
 
 
-
+    """Exemplos de entrada"""
     # eight_game = EightGame([[Square(1), Square(2), Square(3)], [Square(4), Square(8), Square(5)], [Square(0), Square(7), Square(6)]])
+    # eight_game = EightGame([[Square(1), Square(2), Square(3)], [Square(8), Square(6), Square(4)], [Square(0), Square(7), Square(5)]])
     # eight_game = EightGame([[Square(1), Square(2), Square(0)], [Square(4), Square(5), Square(3)], [Square(7), Square(8), Square(6)]])
     # eight_game = EightGame([[Square(1), Square(2), Square(3)], [Square(4), Square(5), Square(0)], [Square(7), Square(8), Square(6)]])
 
+    # Árvore criada a partir do jogo inicial
     tree = Tree(eight_game)
-    # print('Arvore gerada!')
-    tree.search_in_width([tree])
-    # tree.search_in_depth(tree)
+
+    # Busca em largura
+    tree.search_in_width()
+
+    # Busca em profundidade
+    # tree.search_in_depth()
+
+    # Busca com Algoritmo A*
+    # tree.search_in_A()
 
     DrawTree(tree)
 

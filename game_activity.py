@@ -106,3 +106,33 @@ class GameActivity(object):
                         return EightGame(squares)
 
         return []
+
+
+    def shuffle(self):
+        """Função responsável por embaralhar o jogo aleatoriamente."""
+
+        # Cópia do gerenciador de jogos
+        game_activity = copy.deepcopy(self)
+
+        # Quantidade de movimentos
+        shuffle = random.randint(5,15)
+        for i in range(shuffle):
+            # Repetir enquanto não houver movimento
+            while True:
+                # Movimento aleatório
+                moviment = random.randint(1,4)
+
+                if moviment == 1:
+                    eight_game = game_activity.move_to_top()
+                elif moviment == 2:
+                    eight_game = game_activity.move_to_bottom()
+                elif moviment == 3:
+                    eight_game = game_activity.move_to_left()
+                elif moviment == 4:
+                    eight_game = game_activity.move_to_right()
+
+                if eight_game:
+                    game_activity.eight_game = copy.deepcopy(eight_game)
+                    break
+
+        return eight_game
