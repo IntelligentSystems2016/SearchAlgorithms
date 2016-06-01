@@ -26,15 +26,15 @@ class DrawTree(object):
         self.draw(self.tree)
 
         # Renderiza a imagem da árvore
-        dot.render(name)
-        # dot.view(name)
+        # dot.render(name)
+        dot.view()
 
         # Chamada de sistema para abrir imagem
-        os.system('shotwell ' + name + '.png')
+        # os.system('shotwell ' + name + '.png')
 
         # Remove os arquivos desnecessarios apos renderizacao
-        os.remove(name)
-        os.remove(name + '.png')
+        os.remove(name + '.gv')
+        # os.remove(name + '.gv.png')
 
 
     def draw(self, tree):
