@@ -140,13 +140,13 @@ class Tree(object):
         """Preenche árvore e faz uma busca com Algoritmos A* pelo objetivo"""
 
         tree = self
+        # Marca nó raiz como visitado
+        tree.is_visited = True
 
         # Lista auxiliar para colocar os nós do próximo nível
         list_trees = []
 
         while True:
-            # Marca nó atual como visitado
-            tree.is_visited = True
             # Verifica se o jogo atual é o objetivo
             if tree.eight_game.is_objective():
                 # Marca nó atual como objetivo
@@ -156,6 +156,8 @@ class Tree(object):
 
                 # Gera os nós do próximo nível
                 tree.generates_nodes()
+                for child in tree.childrens:
+                    child.is_visited = True
 
                 # Insere filhos na lista
                 list_trees += tree.childrens
@@ -215,7 +217,6 @@ class Tree(object):
             list_trees[j + 1] = chave
 
 
-
     def get_position(self, tree, value):
         """Retorna posição do elemento no tabuleiro (matriz)"""
         game = tree.eight_game.squares
@@ -223,7 +224,7 @@ class Tree(object):
         for i in range(len(game)):
             for j in range(len(game[i])):
                 if game[i][j].label == value:
-                    return [i,j]
+                    return [i+1,j+1]
 
         return []
 

@@ -12,7 +12,6 @@ from tree import *
 def main():
     eight_game = GameActivity(EightGame()).shuffle()
 
-
     """Exemplos de entrada"""
     # eight_game = EightGame([[Square(1), Square(2), Square(3)], [Square(4), Square(8), Square(5)], [Square(0), Square(7), Square(6)]])
     # eight_game = EightGame([[Square(1), Square(2), Square(3)], [Square(8), Square(6), Square(4)], [Square(0), Square(7), Square(5)]])
@@ -22,14 +21,14 @@ def main():
     # Árvore criada a partir do jogo inicial
     tree = Tree(eight_game)
 
-    # Busca em largura
-    tree.search_in_width()
+    # # Busca em largura
+    # tree.search_in_width()
 
-    # Busca em profundidade
+    # # Busca em profundidade
     # tree.search_in_depth()
 
     # Busca com Algoritmo A*
-    # tree.search_in_A()
+    tree.search_in_A()
 
     DrawTree(tree)
 
