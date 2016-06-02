@@ -156,8 +156,12 @@ class Tree(object):
 
                 # Gera os nós do próximo nível
                 tree.generates_nodes()
+
                 for child in tree.childrens:
+                    # Todos os nós filhos são tidos como visitados
                     child.is_visited = True
+                    # Todos os nós filhos iniciam com o custo igual ao do seu pai
+                    child.path_cost = tree.path_cost
 
                 # Insere filhos na lista
                 list_trees += tree.childrens
@@ -205,7 +209,7 @@ class Tree(object):
             manhattan_distance += abs(3 - pos[0]) + abs(2 - pos[1])
 
             # Salva o custo do caminho do nó atual
-            tree.path_cost = manhattan_distance
+            tree.path_cost += manhattan_distance
 
 
         for i,tree in enumerate(list_trees):
