@@ -175,6 +175,42 @@ class Tree(object):
             del list_trees[0]
 
 
+    def search_greedy(self):
+        """Preenche árvore e faz uma busca gulosa pelo objetivo"""
+
+        tree = self
+        # Marca nó raiz como visitado
+        tree.is_visited = True
+
+
+        while True:
+            # Verifica se o jogo atual é o objetivo
+            if tree.eight_game.is_objective():
+                # Marca nó atual como objetivo
+                tree.is_objective = True
+                return
+            else:
+                # Lista auxiliar para colocar os nós do próximo nível
+                list_trees = []
+
+                # Gera os nós do próximo nível
+                tree.generates_nodes()
+
+                for child in tree.childrens:
+                    # Todos os nós filhos são tidos como visitados
+                    child.is_visited = True
+
+                # Insere filhos na lista
+                list_trees += tree.childrens
+                self.sort_distance(list_trees)
+
+            # Testa se a lista está vazia
+            if not list_trees:
+                return
+
+            tree = list_trees[0]
+
+
     def sort_distance(self, list_trees):
         """ 1 2 3   [1,1] [1,2] [1,3]
             4 5 6   [2,1] [2,2] [2,3]
@@ -209,6 +245,7 @@ class Tree(object):
             manhattan_distance += abs(3 - pos[0]) + abs(2 - pos[1])
 
             # Salva o custo do caminho do nó atual
+            # Se
             tree.path_cost += manhattan_distance
 
 

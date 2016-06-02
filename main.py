@@ -27,8 +27,11 @@ def main():
     # # Busca em profundidade
     # tree.search_in_depth()
 
-    # Busca com Algoritmo A*
-    tree.search_in_A()
+    # # Busca com Algoritmo A*
+    # tree.search_in_A()
+
+    # Busca gulosa
+    tree.search_greedy()
 
     DrawTree(tree)
 
