@@ -21,7 +21,7 @@ class QueensPuzzle(object):
                 self.squares.append([])
 
                 # Adiciona quadrados com label 0
-                for j in range (self.size):
+                for j in range(self.size):
                     self.squares[i].append(Square(0))
 
                 # Coloca rainha em coluna aleatória
@@ -133,7 +133,8 @@ class QueensPuzzle(object):
         for i in range(self.size):
             for j in range(self.size):
                 if self.squares[i][j].label == 1:
-                    squares_str += chr(169)
+                    # squares_str += chr(169)
+                    squares_str += "®"
                 else:
                     squares_str += "_"
                 # squares_str += str(self.squares[i][j].label)
