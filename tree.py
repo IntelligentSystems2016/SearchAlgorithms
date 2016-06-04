@@ -107,33 +107,34 @@ class Tree(object):
         self.search_in_width(list_trees)
 
 
-    def search_in_depth(self, tree=None):
-        """Preenche árvore e faz uma busca em largura pelo objetivo"""
+    def search_in_depth(self):
+        """Preenche árvore e faz uma busca em profundidade pelo objetivo"""
 
         global is_finished
 
-        if tree is None:
-            tree = self
+        queue = []
+        tree = self
 
-        # Marca nó atual como visitado
-        tree.is_visited = True
-        # Verifica se o jogo atual é o objetivo
-        if tree.eight_game.is_objective():
-            # Marca nó atual como objetivo
-            tree.is_objective = True
-            is_finished = True
-            return
+        while True:
+            # Marca nó atual como visitado
+            tree.is_visited = True
 
-        # Gera os nós do próximo nível
-        tree.generates_nodes()
-
-        # Gera todos os nós do próximo nível
-        for child in tree.childrens:
-            # Recursão para desenhar sub-árvore de filhos
-            if is_finished:
+            # Verifica se o jogo atual é o objetivo
+            if tree.eight_game.is_objective():
+                # Marca nó atual como objetivo
+                tree.is_objective = True
+                is_finished = True
                 return
             else:
-                self.search_in_depth(child)
+                # Gera os nós do próximo nível
+                tree.generates_nodes()
+                queue = tree.childrens + queue
+
+            if not queue:
+                return
+
+            tree = queue[0]
+            del queue[0]
 
 
     def search_in_A(self):

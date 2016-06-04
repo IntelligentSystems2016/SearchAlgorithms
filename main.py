@@ -26,14 +26,14 @@ def main():
     # # Busca em largura
     # tree.search_in_width()
 
-    # # Busca em profundidade
-    # tree.search_in_depth()
+    # Busca em profundidade
+    tree.search_in_depth()
 
     # # Busca com Algoritmo A*
     # tree.search_in_A()
 
     # Busca gulosa
-    tree.search_greedy()
+    # tree.search_greedy()
 
     DrawTree(tree)
 
