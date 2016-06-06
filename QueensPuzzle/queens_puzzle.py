@@ -7,10 +7,17 @@ from square import *
 
 class QueensPuzzle(object):
     """docstring for QueensPuzzle"""
-    def __init__(self, size, squares=None):
+    def __init__(self, size, squares=None, queens_positions=[]):
         super(QueensPuzzle, self).__init__()
 
+        # Quantidade de rainhas no jogo
         self.size = size
+
+        # Lista de posições onde se encontram as rainhas
+        self.queens_positions = queens_positions
+
+        # Quantidade de rainhas no jogo
+        self.qntd_queens = 0
 
         if squares is None:
             # Cria lista vazia
@@ -22,108 +29,48 @@ class QueensPuzzle(object):
 
                 # Adiciona quadrados com label 0
                 for j in range(self.size):
-                    self.squares[i].append(Square(0))
+                    self.squares[i].append(Square(0, i, j))
 
-                # Coloca rainha em coluna aleatória
-                pos = random.randint(0,self.size - 1)
-                self.squares[i][pos] = Square(1)
+            self.squares[0][0] = Square(1, 0, 0)
+            self.queens_positions.append([0,0])
+            self.qntd_queens += 1
         else:
             self.squares = copy.deepcopy(squares)
 
-        for i in range(self.size):
-            for j in range(self.size):
-                self.squares[i][j].adjacents['left_top'] = Square(-1)
-                self.squares[i][j].adjacents['top'] = Square(-1)
-                self.squares[i][j].adjacents['right_top'] = Square(-1)
-                self.squares[i][j].adjacents['left_bottom'] = Square(-1)
-                self.squares[i][j].adjacents['bottom'] = Square(-1)
-                self.squares[i][j].adjacents['right_bottom'] = Square(-1)
-                self.squares[i][j].adjacents['left'] = Square(-1)
-                self.squares[i][j].adjacents['right'] = Square(-1)
-
-                if i > 0:
-                    if j > 0:
-                        self.squares[i][j].adjacents['left_top'] = self.squares[i-1][j-1]
-
-                if i > 0:
-                    self.squares[i][j].adjacents['top'] = self.squares[i-1][j]
-
-                if i > 0:
-                    if j < self.size - 1:
-                        self.squares[i][j].adjacents['right_top'] = self.squares[i-1][j+1]
-
-                if j > 0:
-                    self.squares[i][j].adjacents['left'] = self.squares[i][j-1]
-
-                if i < self.size - 1:
-                    if j > 0:
-                        self.squares[i][j].adjacents['left_bottom'] = self.squares[i+1][j-1]
-
-                if i < self.size - 1:
-                    self.squares[i][j].adjacents['bottom'] = self.squares[i+1][j]
-
-                if i < self.size - 1:
-                    if j < self.size - 1:
-                        self.squares[i][j].adjacents['right_bottom'] = self.squares[i+1][j+1]
-
-                if j < self.size - 1:
-                    self.squares[i][j].adjacents['right'] = self.squares[i][j+1]
-
 
     def is_objective(self):
-        count = [0] * self.size
+        
+        if self.qntd_queens == self.size:
+            return True
 
-        for i in range(self.size):
-            for j in range(self.size):
-                # Soma a quantidade de rainhas por coluna
-                count[j] += self.squares[i][j].label
-
-                # Se alguma das colunas tiver(em) mais de uma rainha
-                if count[j] > 1:
-                    return False
-
-                # Se for uma rainha
-                if self.squares[i][j].label == 1:
-                    i_diag = i
-                    j_diag_l = j    # Esquerda
-                    j_diag_r = j    # Direita
-                    count_diag = 0
-                    while i_diag >= 0:
-                        i_diag -= 1
-                        j_diag_l -=1
-                        j_diag_r +=1
-
-                        if j_diag_l >= 0:
-                            count_diag += self.squares[i_diag][j_diag_l].label
-
-                        if j_diag_r < self.size:
-                            count_diag += self.squares[i_diag][j_diag_r].label
-
-                        # Se houver alguma rainha na diagonal
-                        if count_diag > 1:
-                            return False
-
-                    i_diag = i
-                    j_diag_l = j    # Esquerda
-                    j_diag_r = j    # Direita
-                    count_diag = 0
-                    while i_diag < self.size - 1:
-                        i_diag += 1
-                        j_diag_l -=1
-                        j_diag_r +=1
-
-                        if j_diag_l >= 0:
-                            count_diag += self.squares[i_diag][j_diag_l].label
-
-                        if j_diag_r < self.size:
-                            count_diag += self.squares[i_diag][j_diag_r].label
-
-                        # Se houver alguma rainha na diagonal
-                        if count_diag > 1:
-                            return False
+        return False
 
 
-        return True
+    def is_check(self, pos_x, pos_y):
+
+        for pos in self.queens_positions:
+
+            queen_pos_x = pos[0]
+            queen_pos_y = pos[1]
+
+            # Mesma coluna
+            if queen_pos_x == pos_x:
+                return True
+
+            # Mesma linha
+            if queen_pos_y == pos_y:
+                return True
+
+            # Diagonal secundária
+            if (queen_pos_y-queen_pos_x) == (pos_y-pos_x):
+                return True
+
+            # Diagonal principal
+            if (queen_pos_y+queen_pos_x) == (pos_y+pos_x):
+                return True
+
+        return False
+
 
 
     def __str__(self):

@@ -12,7 +12,7 @@ class Tree(object):
     global is_finished
     is_finished = False
 
-    def __init__(self, queens_puzzle, generated_trees=[]):
+    def __init__(self, queens_puzzle):
         super(Tree, self).__init__()
         # Id gerado automaticamente
         self.id = time.time()
@@ -24,7 +24,7 @@ class Tree(object):
         self.childrens = []
 
         # Indica se o nó foi ou não marcado
-        self.is_visited = True
+        self.is_visited = False
 
         # Indica se o nó é ou não objetivo
         self.is_objective = False
@@ -32,64 +32,80 @@ class Tree(object):
         # Variável utilizada apenas nos Algoritmos A* e Guloso
         self.path_cost = 0
 
-        # Nós gerados até o momento
-        if not str(queens_puzzle) in generated_trees:
-            generated_trees.append(str(queens_puzzle))
-        self.generated_trees = copy.deepcopy(generated_trees)
-
 
     def generates_nodes(self):
-        # Gerenciador de movimentos do jogo
-        game_activity = GameActivity(self.queens_puzzle)
+        for i in range(self.queens_puzzle.size):
+            for j in range(self.queens_puzzle.size):
 
-        for row in range(self.queens_puzzle.size):
-            # Possíveis movimentos a serem feitos
-            left = game_activity.move_to_left(row)
-            right = game_activity.move_to_right(row)
+                if not self.queens_puzzle.is_check(i,j):
 
-            generated = []
+                    moved = copy.deepcopy(self.queens_puzzle)
+                    moved.squares[i][j].label = 1
+                    moved.queens_positions.append([i,j])
+                    moved.qntd_queens += 1
 
-            if  left and not str(left) in self.generated_trees:
-                left = Tree(left, self.generated_trees)
-                generated.append(str(left))
-                self.childrens.append(left)
+                    moved = Tree(moved)
+                    self.childrens.append(moved)
 
-            if  right and not str(right) in self.generated_trees:
-                right = Tree(right, self.generated_trees)
-                generated.append(str(right))
-                self.childrens.append(right)
-
-        self.generated_trees += generated
         # shuffle(self.childrens)
 
 
-    def search_in_width(self, trees=None):
+    def search_in_width(self):
         """Preenche árvore e faz uma busca em largura pelo objetivo"""
 
+        # Lista auxiliar para colocar os nós do próximo nível
+        list_trees = []
+        tree = self
 
-        if trees is None:
-            trees = [self]
-
-        # Verifica se algum dos nós gera o nó obejetivo
-        for tree in trees:
+        while True:
             # Marca nó atual como visitado
             tree.is_visited = True
             # Verifica se o jogo atual é o objetivo
             if tree.queens_puzzle.is_objective():
                 # Marca nó atual como objetivo
                 tree.is_objective = True
+                print(tree.queens_puzzle)
+                return
+            else:
+                # Gera todos os nós do próximo nível
+                tree.generates_nodes()
+                list_trees += tree.childrens
+
+            if not list_trees:
+                print('Não foi possível encontrar solução!!')
                 return
 
-        # Lista auxiliar para colocar os nós do próximo nível
-        list_trees = []
-
-        # Gera todos os nós do próximo nível
-        for tree in trees:
-            tree.generates_nodes()
-            list_trees += tree.childrens
-
-        # Recursão para desenhar sub-árvore de filhos
-        self.search_in_width(list_trees)
+            tree = list_trees[0]
+            del list_trees[0]
+    # def search_in_width(self, trees=None):
+    #     """Preenche árvore e faz uma busca em largura pelo objetivo"""
+    #
+    #     if trees is None:
+    #         trees = [self]
+    #
+    #     # Verifica se algum dos nós gera o nó obejetivo
+    #     for tree in trees:
+    #         # Marca nó atual como visitado
+    #         tree.is_visited = True
+    #         # Verifica se o jogo atual é o objetivo
+    #         if tree.queens_puzzle.is_objective():
+    #             # Marca nó atual como objetivo
+    #             tree.is_objective = True
+    #             return
+    #
+    #     # Lista auxiliar para colocar os nós do próximo nível
+    #     list_trees = []
+    #
+    #     # Gera todos os nós do próximo nível
+    #     for tree in trees:
+    #         tree.generates_nodes()
+    #         list_trees += tree.childrens
+    #
+    #     if not list_trees:
+    #         return
+    #
+    #     # Recursão para desenhar sub-árvore de filhos
+    #     self.search_in_width(list_trees)
 
 
     def search_in_depth(self):
