@@ -36,7 +36,7 @@ class Tree(object):
                 if not self.queens_puzzle.is_check(i,j):
 
                     moved = copy.deepcopy(self.queens_puzzle)
-                    moved.squares[i][j].label = 1
+                    moved.squares[i][j] = 1
                     moved.queens_positions.append([i,j])
                     moved.qntd_queens += 1
 
@@ -235,7 +235,7 @@ class Tree(object):
     #
     #     for i in range(len(game)):
     #         for j in range(len(game[i])):
-    #             if game[i][j].label == value:
+    #             if game[i][j] == value:
     #                 return [i+1,j+1]
     #
     #     return []

@@ -3,7 +3,6 @@
 
 import copy
 import random
-from square import *
 
 class QueensPuzzle(object):
     """docstring for QueensPuzzle"""
@@ -29,9 +28,9 @@ class QueensPuzzle(object):
 
                 # Adiciona quadrados com label 0
                 for j in range(self.size):
-                    self.squares[i].append(Square(0))
+                    self.squares[i].append(0)
 
-            self.squares[0][0] = Square(1)
+            self.squares[0][0] = 1
             self.queens_positions.append([0,0])
             self.qntd_queens += 1
         else:
@@ -79,12 +78,12 @@ class QueensPuzzle(object):
 
         for i in range(self.size):
             for j in range(self.size):
-                if self.squares[i][j].label == 1:
+                if self.squares[i][j] == 1:
                     # squares_str += chr(169)
                     squares_str += "®"
                 else:
                     squares_str += "_"
-                # squares_str += str(self.squares[i][j].label)
+                # squares_str += str(self.squares[i][j])
                 if j != self.size - 1:
                     squares_str += " "
                 else:
