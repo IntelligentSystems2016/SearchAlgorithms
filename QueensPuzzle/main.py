@@ -11,13 +11,24 @@ def main():
 
     ini = time.time()
 
-    queens_puzzle = QueensPuzzle(8)
-    # print(queens_puzzle)
+    # queens_puzzle = QueensPuzzle(8,[[Square(1),Square(0),Square(0),Square(0),Square(0),Square(0),Square(0),Square(0)],[Square(0),Square(0),Square(0),Square(0),Square(1),Square(0),Square(0),Square(0)],[Square(0),Square(0),Square(0),Square(0),Square(0),Square(0),Square(0),Square(1)],[Square(0),Square(0),Square(0),Square(0),Square(0),Square(1),Square(0),Square(0)],[Square(0),Square(0),Square(1),Square(0),Square(0),Square(0),Square(0),Square(0)],[Square(0),Square(0),Square(0),Square(0),Square(0),Square(0),Square(1),Square(0)],[Square(0),Square(1),Square(0),Square(0),Square(0),Square(0),Square(0),Square(0)],[Square(0),Square(0),Square(0),Square(1),Square(0),Square(0),Square(0),Square(0)]])
+    queens_puzzle = QueensPuzzle(5)
 
     tree = Tree(queens_puzzle)
-    # print(tree.queens_puzzle.is_objective())
+    # tree.is_visited = True
 
-    tree.search_in_width()
+    # # Busca em largura
+    # tree.search_in_width()
+
+    # # Busca em profundidade
+    # tree.search_in_depth()
+
+    # # Busca com Algoritmo A*
+    # tree.search_in_A()
+
+    # Busca gulosa
+    tree.search_greedy()
+
     DrawTree(tree)
 
     fim = time.time()

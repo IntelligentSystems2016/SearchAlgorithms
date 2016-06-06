@@ -182,63 +182,29 @@ class Tree(object):
             tree = list_trees[0]
 
 
-    # def sort_distance(self, list_trees):
-    #     """ 1 2 3   [1,1] [1,2] [1,3]
-    #         4 5 6   [2,1] [2,2] [2,3]
-    #         7 8 0   [3,1] [3,2] [3,3]"""
-    #
-    #     # Calcula a distância Manhattan para cada nó
-    #     for tree in list_trees:
-    #         # Retorna posição do elemento
-    #         pos = self.get_position(tree, 1)
-    #         # Distância Manhattan do elemento
-    #         manhattan_distance = abs(1 - pos[0]) + abs(1 - pos[1])
-    #
-    #         pos = self.get_position(tree, 2)
-    #         manhattan_distance += abs(1 - pos[0]) + abs(2 - pos[1])
-    #
-    #         pos = self.get_position(tree, 3)
-    #         manhattan_distance += abs(1 - pos[0]) + abs(3 - pos[1])
-    #
-    #         pos = self.get_position(tree, 4)
-    #         manhattan_distance += abs(2 - pos[0]) + abs(1 - pos[1])
-    #
-    #         pos = self.get_position(tree, 5)
-    #         manhattan_distance += abs(2 - pos[0]) + abs(2 - pos[1])
-    #
-    #         pos = self.get_position(tree, 6)
-    #         manhattan_distance += abs(2 - pos[0]) + abs(3 - pos[1])
-    #
-    #         pos = self.get_position(tree, 7)
-    #         manhattan_distance += abs(3 - pos[0]) + abs(1 - pos[1])
-    #
-    #         pos = self.get_position(tree, 8)
-    #         manhattan_distance += abs(3 - pos[0]) + abs(2 - pos[1])
-    #
-    #         # Salva o custo do caminho do nó atual
-    #         # Se
-    #         tree.path_cost += manhattan_distance
-    #
-    #
-    #     for i,tree in enumerate(list_trees):
-    #         chave = tree
-    #         j = i - 1
-    #         while j >= 0 and list_trees[j].path_cost > chave.path_cost:
-    #             list_trees[j + 1] = list_trees[j]
-    #             j -= 1
-    #         list_trees[j + 1] = chave
+    def sort_distance(self, list_trees):
+
+        # Calcula a distância Manhattan para cada nó
+        for tree in list_trees:
+            manhattan_distance = 0
+            for i in range(tree.queens_puzzle.size):
+                for j in range(tree.queens_puzzle.size):
+
+                    if tree.queens_puzzle.is_check(i,j):
+                        manhattan_distance += 1
+
+            # Salva o custo do caminho do nó atual
+            # Se
+            tree.path_cost += manhattan_distance
 
 
-    # def get_position(self, tree, value):
-    #     """Retorna posição do elemento no tabuleiro (matriz)"""
-    #     game = tree.queens_puzzle.squares
-    #
-    #     for i in range(len(game)):
-    #         for j in range(len(game[i])):
-    #             if game[i][j] == value:
-    #                 return [i+1,j+1]
-    #
-    #     return []
+        for i,tree in enumerate(list_trees):
+            chave = tree
+            j = i - 1
+            while j >= 0 and list_trees[j].path_cost > chave.path_cost:
+                list_trees[j + 1] = list_trees[j]
+                j -= 1
+            list_trees[j + 1] = chave
 
 
     def __str__(self):
