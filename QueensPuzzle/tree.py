@@ -3,14 +3,10 @@
 
 import copy
 import time
-from game_activity import *
 from random import shuffle
 
 class Tree(object):
     """docstring for Tree"""
-
-    global is_finished
-    is_finished = False
 
     def __init__(self, queens_puzzle):
         super(Tree, self).__init__()
@@ -77,35 +73,6 @@ class Tree(object):
 
             tree = list_trees[0]
             del list_trees[0]
-    # def search_in_width(self, trees=None):
-    #     """Preenche árvore e faz uma busca em largura pelo objetivo"""
-    #
-    #     if trees is None:
-    #         trees = [self]
-    #
-    #     # Verifica se algum dos nós gera o nó obejetivo
-    #     for tree in trees:
-    #         # Marca nó atual como visitado
-    #         tree.is_visited = True
-    #         # Verifica se o jogo atual é o objetivo
-    #         if tree.queens_puzzle.is_objective():
-    #             # Marca nó atual como objetivo
-    #             tree.is_objective = True
-    #             return
-    #
-    #     # Lista auxiliar para colocar os nós do próximo nível
-    #     list_trees = []
-    #
-    #     # Gera todos os nós do próximo nível
-    #     for tree in trees:
-    #         tree.generates_nodes()
-    #         list_trees += tree.childrens
-    #
-    #     if not list_trees:
-    #         return
-    #
-    #     # Recursão para desenhar sub-árvore de filhos
-    #     self.search_in_width(list_trees)
 
 
     def search_in_depth(self):
@@ -124,7 +91,6 @@ class Tree(object):
             if tree.queens_puzzle.is_objective():
                 # Marca nó atual como objetivo
                 tree.is_objective = True
-                is_finished = True
                 return
             else:
                 # Gera os nós do próximo nível
@@ -132,6 +98,7 @@ class Tree(object):
                 queue = tree.childrens + queue
 
             if not queue:
+                print('Não foi possível encontrar solução!!')
                 return
 
             tree = queue[0]
@@ -171,6 +138,7 @@ class Tree(object):
 
             # Testa se a lista está vazia
             if not list_trees:
+                print('Não foi possível encontrar solução!!')
                 return
 
             tree = list_trees[0]
@@ -208,6 +176,7 @@ class Tree(object):
 
             # Testa se a lista está vazia
             if not list_trees:
+                print('Não foi possível encontrar solução!!')
                 return
 
             tree = list_trees[0]

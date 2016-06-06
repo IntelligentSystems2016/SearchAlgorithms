@@ -29,9 +29,9 @@ class QueensPuzzle(object):
 
                 # Adiciona quadrados com label 0
                 for j in range(self.size):
-                    self.squares[i].append(Square(0, i, j))
+                    self.squares[i].append(Square(0))
 
-            self.squares[0][0] = Square(1, 0, 0)
+            self.squares[0][0] = Square(1)
             self.queens_positions.append([0,0])
             self.qntd_queens += 1
         else:
@@ -39,7 +39,7 @@ class QueensPuzzle(object):
 
 
     def is_objective(self):
-        
+
         if self.qntd_queens == self.size:
             return True
 
