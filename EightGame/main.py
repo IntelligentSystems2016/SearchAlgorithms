@@ -10,6 +10,13 @@ from square import *
 from tree import *
 from tree import *
 
+"""
+pip install -U memory_profiler
+python -m memory_profiler main.py
+
+@profile antes da função
+"""
+@profile
 def main():
 
     ini = time.time()
