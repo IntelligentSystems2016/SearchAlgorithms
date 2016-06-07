@@ -8,8 +8,9 @@ from queens_puzzle import *
 from tree import *
 
 """
-pip install -U memory_profiler
-python -m memory_profiler main.py
+pip3 install -U memory_profiler
+pip3 install psutil
+python3 -m memory_profiler main.py
 
 @profile antes da função
 """
@@ -19,7 +20,7 @@ def main():
     ini = time.time()
 
     # queens_puzzle = QueensPuzzle(8,[[Square(1),Square(0),Square(0),Square(0),Square(0),Square(0),Square(0),Square(0)],[Square(0),Square(0),Square(0),Square(0),Square(1),Square(0),Square(0),Square(0)],[Square(0),Square(0),Square(0),Square(0),Square(0),Square(0),Square(0),Square(1)],[Square(0),Square(0),Square(0),Square(0),Square(0),Square(1),Square(0),Square(0)],[Square(0),Square(0),Square(1),Square(0),Square(0),Square(0),Square(0),Square(0)],[Square(0),Square(0),Square(0),Square(0),Square(0),Square(0),Square(1),Square(0)],[Square(0),Square(1),Square(0),Square(0),Square(0),Square(0),Square(0),Square(0)],[Square(0),Square(0),Square(0),Square(1),Square(0),Square(0),Square(0),Square(0)]])
-    queens_puzzle = QueensPuzzle(8)
+    queens_puzzle = QueensPuzzle(5)
 
     tree = Tree(queens_puzzle)
     # tree.is_visited = True
@@ -36,10 +37,10 @@ def main():
     # # Busca gulosa
     # tree.search_greedy()
 
-    # DrawTree(tree)
+    DrawTree(tree)
 
     fim = time.time()
-    print("Tempo TOTAL =", fim - ini, "segundos")
+    print("Tempo TOTAL =", fim - ini, "segundos\n\n")
 
 if __name__ == '__main__':
     main()

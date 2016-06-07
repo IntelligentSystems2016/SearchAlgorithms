@@ -11,8 +11,9 @@ from tree import *
 from tree import *
 
 """
-pip install -U memory_profiler
-python -m memory_profiler main.py
+pip3 install -U memory_profiler
+pip3 install psutil
+python3 -m memory_profiler main.py
 
 @profile antes da função
 """
@@ -48,7 +49,7 @@ def main():
     DrawTree(tree)
 
     fim = time.time()
-    print("Tempo TOTAL =", fim - ini, "segundos")
+    print("Tempo TOTAL =", fim - ini, "segundos\n\n")
 
 
 if __name__ == '__main__':

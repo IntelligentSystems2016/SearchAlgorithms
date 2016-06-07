@@ -91,6 +91,7 @@ class Tree(object):
             tree.is_visited = True
             # Verifica se o jogo atual é o objetivo
             if tree.eight_game.is_objective():
+                print(tree.eight_game)
                 # Marca nó atual como objetivo
                 tree.is_objective = True
                 return
@@ -102,6 +103,10 @@ class Tree(object):
         for tree in trees:
             tree.generates_nodes()
             list_trees += tree.childrens
+
+        if not list_trees:
+            print('Não foi possível encontrar solução!!')
+            return
 
         # Recursão para desenhar sub-árvore de filhos
         self.search_in_width(list_trees)
@@ -121,6 +126,7 @@ class Tree(object):
 
             # Verifica se o jogo atual é o objetivo
             if tree.eight_game.is_objective():
+                print(tree.eight_game)
                 # Marca nó atual como objetivo
                 tree.is_objective = True
                 is_finished = True
@@ -131,6 +137,7 @@ class Tree(object):
                 queue = tree.childrens + queue
 
             if not queue:
+                print('Não foi possível encontrar solução!!')
                 return
 
             tree = queue[0]
@@ -150,6 +157,7 @@ class Tree(object):
         while True:
             # Verifica se o jogo atual é o objetivo
             if tree.eight_game.is_objective():
+                print(tree.eight_game)
                 # Marca nó atual como objetivo
                 tree.is_objective = True
                 return
@@ -170,6 +178,7 @@ class Tree(object):
 
             # Testa se a lista está vazia
             if not list_trees:
+                print('Não foi possível encontrar solução!!')
                 return
 
             tree = list_trees[0]
@@ -187,6 +196,7 @@ class Tree(object):
         while True:
             # Verifica se o jogo atual é o objetivo
             if tree.eight_game.is_objective():
+                print(tree.eight_game)
                 # Marca nó atual como objetivo
                 tree.is_objective = True
                 return
@@ -207,6 +217,7 @@ class Tree(object):
 
             # Testa se a lista está vazia
             if not list_trees:
+                print('Não foi possível encontrar solução!!')
                 return
 
             tree = list_trees[0]

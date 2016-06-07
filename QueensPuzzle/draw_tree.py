@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import copy
-import os
-import os.path
+# import os
+# import os.path
 from tree import *
 from graphviz import Digraph
 
@@ -28,8 +28,8 @@ class DrawTree(object):
         # Visualiza a imagem da árvore
         dot.view()
 
-        # Remove os arquivos desnecessarios apos renderizacao
-        os.remove(name + '.gv')
+        # # Remove os arquivos desnecessarios apos renderizacao
+        # os.remove(name + '.gv')
         # os.remove(name + '.gv.png')
 
 
